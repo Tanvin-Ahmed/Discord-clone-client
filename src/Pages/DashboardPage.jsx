@@ -8,35 +8,38 @@ import AppBar from "../Components/dashboard/appBar/AppBar";
 import { connectWithSocketServer } from "../realtimeCommunication/socketConnection";
 import { useDispatch, useSelector } from "react-redux";
 import { getRefreshToken } from "../app/actions/userActions";
+import Room from "../Components/dashboard/room/Room";
 
 const Wrapper = styled(Box)({
-	width: "100%",
-	height: "100vh",
-	display: "flex",
+  width: "100%",
+  height: "100vh",
+  display: "flex",
 });
 
 const DashboardPage = () => {
-	const dispatch = useDispatch();
-	const { userDetails } = useSelector(state => state.auth);
+  const dispatch = useDispatch();
+  const { userDetails } = useSelector((state) => state.auth);
+  const { isUserInRoom } = useSelector((state) => state.room);
 
-	useEffect(() => {
-		if (!userDetails?.token) return;
-		connectWithSocketServer(userDetails);
-	}, [userDetails]);
+  useEffect(() => {
+    if (!userDetails?.token) return;
+    connectWithSocketServer(userDetails);
+  }, [userDetails]);
 
-	// useEffect(() => {
-	// 	if (!userDetails?.token || !dispatch) return;
-	// 	dispatch(getRefreshToken(userDetails));
-	// }, [userDetails, dispatch]);
+  // useEffect(() => {
+  // 	if (!userDetails?.token || !dispatch) return;
+  // 	dispatch(getRefreshToken(userDetails));
+  // }, [userDetails, dispatch]);
 
-	return (
-		<Wrapper>
-			<Sidebar />
-			<FriendSidebar />
-			<Messenger />
-			<AppBar />
-		</Wrapper>
-	);
+  return (
+    <Wrapper>
+      <Sidebar />
+      <FriendSidebar />
+      <Messenger />
+      <AppBar />
+      {isUserInRoom && <Room />}
+    </Wrapper>
+  );
 };
 
 export default DashboardPage;
