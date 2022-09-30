@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { styled } from "@mui/system";
 import { Box } from "@mui/material";
 import Sidebar from "../Components/dashboard/sidebar/Sidebar";
@@ -9,6 +9,8 @@ import { connectWithSocketServer } from "../realtimeCommunication/socketConnecti
 import { useDispatch, useSelector } from "react-redux";
 import { getRefreshToken } from "../app/actions/userActions";
 import Room from "../Components/dashboard/room/Room";
+import { useContext } from "react";
+import { webRTCContext } from "../Context/ContextWebRTC";
 
 const Wrapper = styled(Box)({
   width: "100%",
@@ -17,14 +19,19 @@ const Wrapper = styled(Box)({
 });
 
 const DashboardPage = () => {
-  const dispatch = useDispatch();
-  const { userDetails } = useSelector((state) => state.auth);
+  const { setLocalStream, setRemoteStreams } = useContext(webRTCContext);
   const { isUserInRoom } = useSelector((state) => state.room);
 
+  const socketConnRef = useRef(false);
+
   useEffect(() => {
-    if (!userDetails?.token) return;
-    connectWithSocketServer(userDetails);
-  }, [userDetails]);
+    if (socketConnRef.current === true) {
+      connectWithSocketServer(setLocalStream, setRemoteStreams);
+    }
+    return () => {
+      socketConnRef.current = true;
+    };
+  }, [setLocalStream, setRemoteStreams]);
 
   // useEffect(() => {
   // 	if (!userDetails?.token || !dispatch) return;

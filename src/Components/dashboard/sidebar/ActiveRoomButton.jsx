@@ -1,5 +1,6 @@
 import { Button, Tooltip } from "@mui/material";
-import React from "react";
+import React, { useContext } from "react";
+import { webRTCContext } from "../../../Context/ContextWebRTC";
 import { joinRoom } from "../../../realtimeCommunication/roomHandler";
 import Avatar from "../../shared/Avatar";
 
@@ -9,9 +10,10 @@ const ActiveRoomButton = ({
   amountOfParticipants,
   isUserInRoom,
 }) => {
+  const { setLocalStream } = useContext(webRTCContext);
   const handleJoinActiveRoom = () => {
     if (amountOfParticipants < 4) {
-      joinRoom(roomId);
+      joinRoom(roomId, setLocalStream);
     }
   };
 

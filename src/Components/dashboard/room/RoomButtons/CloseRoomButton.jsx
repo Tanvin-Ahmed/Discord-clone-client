@@ -1,11 +1,15 @@
 import { IconButton } from "@mui/material";
-import React from "react";
+import React, { useContext } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { leaveRoom } from "../../../../realtimeCommunication/roomHandler";
+import { webRTCContext } from "../../../../Context/ContextWebRTC";
 
 const CloseRoomButton = () => {
+  const { setRemoteStreams, setLocalStream, setScreenSharingStream } =
+    useContext(webRTCContext);
+
   const handleLeaveRoom = () => {
-    leaveRoom();
+    leaveRoom(setRemoteStreams, setLocalStream, setScreenSharingStream);
   };
 
   return (

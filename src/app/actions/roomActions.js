@@ -23,3 +23,15 @@ export const setLocalStream = (stream) => (dispatch) => {
 export const setAudioOnly = (audioOnly) => (dispatch) => {
   dispatch(roomActions.setAudioOnly(audioOnly));
 };
+
+export const setRemoteStreams = (streams) => (dispatch) => {
+  dispatch(roomActions.setRemoteStreams(streams));
+};
+
+export const setIsScreenSharingActive = (bool) => (dispatch) => {
+  dispatch(roomActions.setIsScreenSharingActive(bool));
+};
+
+export const setIsUserJoinWithOnlyAudio = (bool) => (dispatch) => {
+  dispatch(roomActions.setIsUserJoinWithOnlyAudio(bool));
+};

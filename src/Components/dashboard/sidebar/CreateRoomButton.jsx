@@ -3,11 +3,14 @@ import { Box, Button } from "@mui/material";
 import React from "react";
 import { createNewRoom } from "../../../realtimeCommunication/roomHandler";
 import { useSelector } from "react-redux";
+import { useContext } from "react";
+import { webRTCContext } from "../../../Context/ContextWebRTC";
 
 const CreateRoomButton = () => {
+  const { setLocalStream } = useContext(webRTCContext);
   const { isUserInRoom } = useSelector((state) => state.room);
   const createNewRoomHandler = () => {
-    createNewRoom();
+    createNewRoom(setLocalStream);
   };
 
   return (

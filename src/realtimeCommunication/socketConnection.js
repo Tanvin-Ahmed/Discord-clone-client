@@ -7,10 +7,19 @@ import {
 import { store } from "../app/store";
 import { updateDirectChatHistoryIfActive } from "../utils/chat";
 import { newRoomCreated, updateActiveRooms } from "./roomHandler";
+import {
+  handleParticipantLeftRoom,
+  handleSignalingData,
+  prepareNewPeerConnection,
+} from "./webRTCHendler";
 
 let socket = null;
 
-export const connectWithSocketServer = (userDetails) => {
+export const connectWithSocketServer = (setLocalStream, setRemoteStreams) => {
+  const userDetails = store.getState().auth.userDetails;
+
+  if (!userDetails.token) return;
+
   const { token } = userDetails;
   socket = io("http://localhost:4000", {
     auth: {
@@ -50,6 +59,37 @@ export const connectWithSocketServer = (userDetails) => {
     const { activeRooms } = data;
     updateActiveRooms(activeRooms);
   });
+
+  socket.on("conn-prepare", (data) => {
+    const { connUserSocketId } = data;
+    prepareNewPeerConnection(
+      connUserSocketId,
+      false,
+      setLocalStream,
+      setRemoteStreams
+    );
+
+    socket.emit("conn-init", { connUserSocketId });
+  });
+
+  socket.on("conn-init", (data) => {
+    const { connUserSocketId } = data;
+    prepareNewPeerConnection(
+      connUserSocketId,
+      true,
+      setLocalStream,
+      setRemoteStreams
+    );
+  });
+
+  socket.on("room-participant-left", (data) => {
+    const { connUserSocketId } = data;
+    handleParticipantLeftRoom(connUserSocketId, setRemoteStreams);
+  });
+
+  socket.on("conn-signal", (data) => {
+    handleSignalingData(data);
+  });
 };
 
 export const sendDirectMessage = (data) => {
@@ -70,4 +110,8 @@ export const joinRoom = (data) => {
 
 export const leaveRoom = (data) => {
   socket.emit("room-leave", data);
+};
+
+export const signalPeerData = (data) => {
+  socket.emit("conn-signal", data);
 };
