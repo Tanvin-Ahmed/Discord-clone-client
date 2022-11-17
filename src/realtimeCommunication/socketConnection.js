@@ -21,7 +21,7 @@ export const connectWithSocketServer = (setLocalStream, setRemoteStreams) => {
   if (!userDetails.token) return;
 
   const { token } = userDetails;
-  socket = io("http://localhost:4000", {
+  socket = io("https://tanvin-discord-clone-server.herokuapp.com", {
     auth: {
       token,
     },
