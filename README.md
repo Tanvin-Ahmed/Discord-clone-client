@@ -1,6 +1,6 @@
 # Discord Clone Frontend
 
-This is a real time chat app with group call functionality. [Live preview](https://github.com/facebook/create-react-app).
+This is a real time chat app with group call functionality. [Live preview](https://storied-cocada-e77b76.netlify.app/).
 
 ## Features
 
