@@ -1,6 +1,6 @@
 import axios from "axios";
 
-axios.defaults.baseURL = "https://tanvin-discord-clone-server.herokuapp.com";
+axios.defaults.baseURL = "https://d-clone-server.onrender.com";
 axios.defaults.timeout = 15000;
 axios.interceptors.request.use(
   (config) => {

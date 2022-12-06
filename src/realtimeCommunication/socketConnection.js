@@ -1,8 +1,8 @@
 import io from "socket.io-client";
 import {
-  setPendingFriendsInvitations,
   setFriends,
   setOnlineFriends,
+  setPendingFriendsInvitations,
 } from "../app/actions/friendsActions";
 import { store } from "../app/store";
 import { updateDirectChatHistoryIfActive } from "../utils/chat";
@@ -21,7 +21,7 @@ export const connectWithSocketServer = (setLocalStream, setRemoteStreams) => {
   if (!userDetails.token) return;
 
   const { token } = userDetails;
-  socket = io("https://tanvin-discord-clone-server.herokuapp.com", {
+  socket = io("https://d-clone-server.onrender.com", {
     auth: {
       token,
     },
