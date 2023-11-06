@@ -1,6 +1,5 @@
-import React from "react";
 import { styled } from "@mui/system";
-import { Box } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import MessagesHeader from "./MessagesHeader";
 import { useSelector } from "react-redux";
 import Message from "./Message";
@@ -26,12 +25,18 @@ const convertTimeHumanReadable = (date, formate) => {
 };
 
 const Messages = () => {
-  const { chosenChatDetails, messages } = useSelector((state) => state.chat);
+  const { chosenChatDetails, messages, loading } = useSelector(
+    (state) => state.chat
+  );
 
   return (
     <MainContainer>
       <MessagesHeader name={chosenChatDetails?.name} />
-      {messages.length > 0 ? (
+      {loading ? (
+        <Stack justifyContent={"center"} alignItems={"center"}>
+          <Typography color={"white"}>Loading...</Typography>
+        </Stack>
+      ) : messages.length > 0 ? (
         messages.map((message, index) => {
           const msg = { ...message };
           msg.sameAuthor =
@@ -65,7 +70,9 @@ const Messages = () => {
           );
         })
       ) : (
-        <h5>Loading....</h5>
+        <Typography variant="h4" color={"gray"} mt={8}>
+          Start message...
+        </Typography>
       )}
     </MainContainer>
   );

@@ -6,6 +6,7 @@ export const chatSlice = createSlice({
     messages: [],
     chosenChatDetails: null,
     chatType: null,
+    loading: false,
   },
   reducers: {
     setChosenChatDetails: (state, action) => {
@@ -16,6 +17,9 @@ export const chatSlice = createSlice({
 
     setMessage: (state, action) => {
       state.messages = action.payload;
+    },
+    toggleChatLoading: (state, action) => {
+      state.loading = !state.loading;
     },
   },
 });

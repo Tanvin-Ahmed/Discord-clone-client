@@ -12,6 +12,7 @@ import {
   handleSignalingData,
   prepareNewPeerConnection,
 } from "./webRTCHendler";
+import { toggleChatLoading } from "../app/actions/chatActions";
 
 let socket = null;
 
@@ -21,7 +22,7 @@ export const connectWithSocketServer = (setLocalStream, setRemoteStreams) => {
   if (!userDetails.token) return;
 
   const { token } = userDetails;
-  socket = io("https://d-clone-server.onrender.com", {
+  socket = io("http://localhost:4000", {
     auth: {
       token,
     },
@@ -47,7 +48,10 @@ export const connectWithSocketServer = (setLocalStream, setRemoteStreams) => {
   });
 
   socket.on("direct-chat-history", (data) => {
-    updateDirectChatHistoryIfActive(data);
+    if (data) {
+      updateDirectChatHistoryIfActive(data);
+    }
+    store.dispatch(toggleChatLoading());
   });
 
   socket.on("room-create", (data) => {
